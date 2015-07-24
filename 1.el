@@ -10,15 +10,15 @@
 (require 'cl)
 
 (defun my-last (els)
-  "The last element of ELS."
+  "The last box of ELS."
   (let ((el els))
     (while (not (eq nil (cdr el)))
       (setq el (cdr el)))
-    (car el)))
+    el))
 
-(assert (eq 'd (my-last '(a b c d))))
+(assert (equal '(d) (my-last '(a b c d))))
 
-(assert (eq nil (my-last nil)))
-(assert (eq 'a (my-last '(a))))
+(assert (equal nil (my-last nil)))
+(assert (equal '(a) (my-last '(a))))
 
 ;;; 1.El ends here
