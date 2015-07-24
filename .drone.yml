@@ -1,0 +1,8 @@
+image: ensime/ensime:latest
+
+script:
+  - $EMACS --batch --no-site-file --no-init-file --load *.el
+
+env:
+  - EMACS=/opt/emacs-24.4/bin/emacs
+  - UNDERCOVER=true
