@@ -11,8 +11,10 @@
 
 (defun my-last (els)
   "The last box of ELS."
-  (when els
-    (or (my-last (cdr els)) els)))
+  (let ((tail (cdr els)))
+    (if (null tail)
+        els
+      (my-last tail))))
 
 (assert (equal '(d) (my-last '(a b c d))))
 
