@@ -11,14 +11,12 @@
 
 (defun my-last (els)
   "The last box of ELS."
-  (let ((el els))
-    (while (not (eq nil (cdr el)))
-      (setq el (cdr el)))
-    el))
+  (when els
+    (or (my-last (cdr els)) els)))
 
 (assert (equal '(d) (my-last '(a b c d))))
 
 (assert (equal nil (my-last nil)))
 (assert (equal '(a) (my-last '(a))))
 
-;;; 1.El ends here
+;;; 1.el ends here
