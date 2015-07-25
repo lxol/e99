@@ -1,4 +1,4 @@
-;;; 1.el --- Problem 1 of 99
+;;; 01.el --- Problem 1 of 99
 ;;; Commentary:
 ;;
 ;;  Find the last box of a list. Example:
@@ -13,10 +13,10 @@
     ((pred null) els)
     (tail (my-last tail))))
 
-(ert-deftest Q1 ()
+(ert-deftest Q01 ()
   (should (equal '(d) (my-last '(a b c d))))
 
   (should (equal nil (my-last nil)))
   (should (equal '(a) (my-last '(a))))
 )
-;;; 1.el ends here
+;;; 01.el ends here

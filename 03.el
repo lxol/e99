@@ -1,4 +1,4 @@
-;;; 3.el --- Problem 3 of 99
+;;; 03.el --- Problem 3 of 99
 ;;; Commentary:
 ;;
 ;;  Find the K'th element of a list.
@@ -14,7 +14,7 @@
       (car els)
     (element-at (cdr els) (1- k))))
 
-(ert-deftest Q3 ()
+(ert-deftest Q03 ()
   (should (equal 'c (element-at '(a b c d e) 3)))
 
   (should (equal 'a (element-at '(a b c d e) 1)))
@@ -24,4 +24,4 @@
   (should (equal 'a (element-at '(a b c d e) 0)))
 )
 
-;;; 3.el ends here
+;;; 03.el ends here

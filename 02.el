@@ -1,4 +1,4 @@
-;;; 2.el --- Problem 2 of 99
+;;; 02.el --- Problem 2 of 99
 ;;; Commentary:
 ;;
 ;;  Find the last but one box of a list.
@@ -14,11 +14,11 @@
     (else (my-but-last (cdr els)))))
 
 
-(ert-deftest Q2 ()
+(ert-deftest Q02 ()
   (should (equal '(c d) (my-but-last '(a b c d))))
 
   (should (equal '(b c) (my-but-last '(a b c))))
   (should (equal '(a b) (my-but-last '(a b))))
 )
 
-;;; 2.el ends here
+;;; 02.el ends here
