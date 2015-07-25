@@ -11,12 +11,9 @@
 
 (defun my-but-last (els)
   "Last but one box of ELS."
-  (let ((head (car els))
-        (tail (cdr els)))
-    (while (cdr tail)
-      (setq head (car tail)
-            tail (cdr tail)))
-    `(,head . ,tail)))
+  (pcase (cdr (cdr els))
+    ((pred null) els)
+    (else (my-but-last (cdr els)))))
 
 (assert (equal '(c d) (my-but-last '(a b c d))))
 
