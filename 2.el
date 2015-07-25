@@ -7,17 +7,18 @@
 ;;
 ;;; Code:
 
-(require 'cl)
-
 (defun my-but-last (els)
   "Last but one box of ELS."
   (pcase (cdr (cdr els))
     ((pred null) els)
     (else (my-but-last (cdr els)))))
 
-(assert (equal '(c d) (my-but-last '(a b c d))))
 
-(assert (equal '(b c) (my-but-last '(a b c))))
-(assert (equal '(a b) (my-but-last '(a b))))
+(ert-deftest Q2 ()
+  (should (equal '(c d) (my-but-last '(a b c d))))
+
+  (should (equal '(b c) (my-but-last '(a b c))))
+  (should (equal '(a b) (my-but-last '(a b))))
+)
 
 ;;; 2.el ends here

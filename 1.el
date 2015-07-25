@@ -7,17 +7,16 @@
 ;;
 ;;; Code:
 
-(require 'cl)
-
 (defun my-last (els)
   "The last box of ELS."
   (pcase (cdr els)
     ((pred null) els)
     (tail (my-last tail))))
 
-(assert (equal '(d) (my-last '(a b c d))))
+(ert-deftest Q1 ()
+  (should (equal '(d) (my-last '(a b c d))))
 
-(assert (equal nil (my-last nil)))
-(assert (equal '(a) (my-last '(a))))
-
+  (should (equal nil (my-last nil)))
+  (should (equal '(a) (my-last '(a))))
+)
 ;;; 1.el ends here

@@ -8,15 +8,13 @@
 ;;
 ;;; Code:
 
-(require 'ert)
-
 (defun element-at (els k)
   "Element of ELS at position K (1-based indexing)."
   (if (<= k 1)
       (car els)
     (element-at (cdr els) (1- k))))
 
-(ert-deftest ert-test-3 ()
+(ert-deftest Q3 ()
   (should (equal 'c (element-at '(a b c d e) 3)))
 
   (should (equal 'a (element-at '(a b c d e) 1)))
