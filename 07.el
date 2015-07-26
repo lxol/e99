@@ -15,13 +15,13 @@
 
 (defun my-flatten (lst)
   "A flattened version of LST."
-  (let ((el nil)
-        (flat nil))
-    (while (not (null lst))
+  (let (el els flat)
+    (while lst
       (setq el (car lst)
-            flat (append flat (if (listp el)
-                                  (my-flatten el)
-                                (list el)))
+            els (if (listp el)
+                    (my-flatten el) ;; assumes shallow nesting
+                  (list el))
+            flat (append flat els)
             lst (cdr lst)))
     flat))
 
