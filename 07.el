@@ -13,16 +13,16 @@
 ;;
 ;;; Code:
 
-(defun my-flatten (lst)
-  "A flattened version of LST."
+(defun my-flatten (list)
+  "A flattened version of LIST."
   (let (el els flat)
-    (while lst
-      (setq el (car lst)
+    (while list
+      (setq el (car list)
             els (if (listp el)
                     (my-flatten el) ;; assumes shallow nesting
                   (list el))
             flat (append flat els)
-            lst (cdr lst)))
+            list (cdr list)))
     flat))
 
 (ert-deftest Q07 ()
