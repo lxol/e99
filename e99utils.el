@@ -20,4 +20,6 @@
   ;; would be good to check stack overflow
   )
 
+(provide 'e99utils)
+
 ;;; e99utils.el ends here

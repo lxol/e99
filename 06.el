@@ -7,7 +7,7 @@
 ;;
 ;;; Code:
 
-(autoload 'repeat-n "e99utils")
+(require 'e99utils)
 
 (defun palindrome-p (lst)
   "True if LST is a palindrome."
