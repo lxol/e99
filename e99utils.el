@@ -5,6 +5,7 @@
 ;;
 ;;; Code:
 
+;;;###autoload
 (defun repeat-n (x n)
   "List of X repeated N times."
   (let ((els nil))

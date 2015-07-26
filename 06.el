@@ -7,6 +7,10 @@
 ;;
 ;;; Code:
 
+(autoload 'repeat-n "e99utils")
+;; how can I use require instead of autoload?
+;;(require 'e99utils)
+
 (defun palindrome-p (lst)
   "True if LST is a palindrome."
   (equal lst (reverse lst)))
@@ -18,7 +22,6 @@
 
   (should (palindrome-p nil))
 
-  (require 'e99utils)
   (should (palindrome-p (repeat-n 'x 1000)))
 )
 
