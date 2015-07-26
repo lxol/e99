@@ -7,6 +7,8 @@
 ;;
 ;;; Code:
 
+(require 'e99utils)
+
 (defun my-but-last (lst)
   "Last but one box of LST."
   (while (not (null (cddr lst)))
@@ -20,7 +22,7 @@
   (should (equal '(b c) (my-but-last '(a b c))))
   (should (equal '(a b) (my-but-last '(a b))))
 
-  (should (equal '(999 1000) (my-but-last (number-sequence 1 1000)) ))
+  (should (equal `(,(1- overflow-depth) ,overflow-depth) (my-but-last (number-sequence 1 overflow-depth)) ))
 )
 
 ;;; 02.el ends here

@@ -20,7 +20,7 @@
 
   (should (palindrome-p nil))
 
-  (should (palindrome-p (repeat-n 'x 1000)))
+  (should (palindrome-p (repeat-n 'x overflow-depth)))
 )
 
 ;;; 06.el ends here

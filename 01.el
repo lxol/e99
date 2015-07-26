@@ -7,6 +7,8 @@
 ;;
 ;;; Code:
 
+(require 'e99utils)
+
 (defun my-last (lst)
   "The last box of LST."
   (while (not (null (cdr lst)))
@@ -20,6 +22,6 @@
   (should (equal '(a) (my-last '(a))))
 
   ;; check for stack overflows
-  (should (equal '(1000) (my-last (number-sequence 1 1000))))
+  (should (equal `(,overflow-depth) (my-last (number-sequence 1 overflow-depth))))
 )
 ;;; 01.el ends here

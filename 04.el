@@ -5,6 +5,8 @@
 ;;
 ;;; Code:
 
+(require 'e99utils)
+
 (defun num-elements (lst)
   "The number of elements of LST."
   (let ((num 0))
@@ -19,7 +21,8 @@
   (should (equal 2 (num-elements '(a b))))
   (should (equal 3 (num-elements '(a b c))))
 
-  (should (equal 1000 (num-elements (number-sequence 1 1000))))
+  (should (equal overflow-depth
+                 (num-elements (number-sequence 1 overflow-depth))))
 )
 
 ;;; 04.el ends here

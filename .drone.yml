@@ -1,7 +1,7 @@
 image: ensime/ensime:latest
 
 script:
-  - $EMACS --batch --no-site-file --no-init-file --load ert `find . -name "*.el" | sed 's|^|--load |'` -f ert-run-tests-batch-and-exit
+  - $EMACS --batch --no-site-file --no-init-file --load ert --load e99utils.el `find . -name "[0-9]*.el" | sed 's|^|--load |'` -f ert-run-tests-batch-and-exit
 
 env:
   - EMACS=/opt/emacs-24.5/bin/emacs

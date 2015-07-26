@@ -8,6 +8,8 @@
 ;;
 ;;; Code:
 
+(require 'e99utils)
+
 (defun element-at (lst k)
   "Element of LST at position K (1-based indexing)."
   (while (> k 1)
@@ -25,7 +27,7 @@
   (should (equal nil (element-at '(a b c d e) 6)))
   (should (equal 'a (element-at '(a b c d e) 0)))
 
-  (should (equal 1000 (element-at (number-sequence 1 1000) 1000)))
+  (should (equal overflow-depth (element-at (number-sequence 1 overflow-depth) overflow-depth)))
 )
 
 ;;; 03.el ends here

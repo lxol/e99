@@ -13,6 +13,8 @@
 ;;
 ;;; Code:
 
+(require 'e99utils)
+
 (defun my-flatten (list)
   "A flattened version of LIST."
   (cond ((listp list)
@@ -27,6 +29,9 @@
   (should (equal '(a b c d e) (my-flatten '(a (b (c d) e)))))
   (should (equal '(a b c d e) (my-flatten '((((((a b c d e)))))))))
   (should (equal '(a b c) (my-flatten '((a b c) (nil) nil))))
-  )
+
+  (should (equal (repeat-n 'a overflow-depth)
+                 (my-flatten (repeat-n '(a) overflow-depth))))
+)
 
 ;;; 07.el ends here
