@@ -5,7 +5,6 @@
 ;;
 ;;; Code:
 
-;;;###autoload
 (defun repeat-n (x n)
   "List of X repeated N times."
   (let ((els nil))
@@ -20,7 +19,5 @@
 
   ;; would be good to check stack overflow
   )
-
-(provide 'e99utils)
 
 ;;; e99utils.el ends here
