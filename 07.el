@@ -15,17 +15,13 @@
 
 (defun my-flatten (list)
   "A flattened version of LIST."
-  (let (el els flat)
-    (while list
-      (setq el (car list)
-            els (if (listp el)
-                    (my-flatten el) ;; assumes shallow nesting
-                  (list el))
-            flat (append flat els)
-            list (cdr list)))
-    flat))
+  (cond ((listp list)
+         (apply 'append (mapcar 'my-flatten list)))
+        (t
+         (list list))))
 
 (ert-deftest Q07 ()
+  (should (equal nil (my-flatten nil)))
   (should (equal '(a) (my-flatten '(a))))
   (should (equal '(a b) (my-flatten '(a b))))
   (should (equal '(a b c d e) (my-flatten '(a (b (c d) e)))))
