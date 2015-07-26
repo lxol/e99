@@ -7,16 +7,19 @@
 ;;
 ;;; Code:
 
-(defun my-last (els)
-  "The last box of ELS."
-  (pcase (cdr els)
-    ((pred null) els)
-    (tail (my-last tail))))
+(defun my-last (lst)
+  "The last box of LST."
+  (while (not (null (cdr lst)))
+    (setq lst (cdr lst)))
+  lst)
 
 (ert-deftest Q01 ()
   (should (equal '(d) (my-last '(a b c d))))
 
   (should (equal nil (my-last nil)))
   (should (equal '(a) (my-last '(a))))
+
+  ;; check for stack overflows
+  (should (equal '(1000) (my-last (number-sequence 1 1000))))
 )
 ;;; 01.el ends here

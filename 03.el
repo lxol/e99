@@ -8,11 +8,13 @@
 ;;
 ;;; Code:
 
-(defun element-at (els k)
-  "Element of ELS at position K (1-based indexing)."
-  (if (<= k 1)
-      (car els)
-    (element-at (cdr els) (1- k))))
+(defun element-at (lst k)
+  "Element of LST at position K (1-based indexing)."
+  (while (> k 1)
+    (setq lst (cdr lst)
+          k (1- k)))
+  (car lst))
+
 
 (ert-deftest Q03 ()
   (should (equal 'c (element-at '(a b c d e) 3)))
@@ -22,6 +24,8 @@
 
   (should (equal nil (element-at '(a b c d e) 6)))
   (should (equal 'a (element-at '(a b c d e) 0)))
+
+  (should (equal 1000 (element-at (number-sequence 1 1000) 1000)))
 )
 
 ;;; 03.el ends here

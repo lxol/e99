@@ -7,11 +7,11 @@
 ;;
 ;;; Code:
 
-(defun my-but-last (els)
-  "Last but one box of ELS."
-  (pcase (cdr (cdr els))
-    ((pred null) els)
-    (else (my-but-last (cdr els)))))
+(defun my-but-last (lst)
+  "Last but one box of LST."
+  (while (not (null (cddr lst)))
+    (setq lst (cdr lst)))
+  lst)
 
 
 (ert-deftest Q02 ()
@@ -19,6 +19,8 @@
 
   (should (equal '(b c) (my-but-last '(a b c))))
   (should (equal '(a b) (my-but-last '(a b))))
+
+  (should (equal '(999 1000) (my-but-last (number-sequence 1 1000)) ))
 )
 
 ;;; 02.el ends here
