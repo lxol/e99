@@ -11,12 +11,22 @@
 ;;
 ;;; Code:
 
+(require 'e99utils)
+
 (defun compress (list)
   "A new LIST with consecutive duplicates removed."
-  )
+  (let (deduped last)
+    (dolist (el list (reverse deduped))
+      (when (not (equal last el))
+        (setq deduped (cons el deduped)
+              last el)))))
 
 (ert-deftest Q08 ()
   (should (equal '(a b c a d e) (compress '(a a a a b c c a a d e e e e))))
+
+  (should (equal nil (compress nil)))
+  (should (equal '(a b c) (compress '(a b c))))
+  (should (equal '(a) (compress (repeat-n 'a overflow-depth))))
 )
 
 ;;; 08.el ends here
