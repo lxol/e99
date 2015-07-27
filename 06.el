@@ -9,9 +9,9 @@
 
 (require 'e99utils)
 
-(defun palindrome-p (lst)
-  "True if LST is a palindrome."
-  (equal lst (reverse lst)))
+(defun palindrome-p (list)
+  "True if LIST is a palindrome."
+  (equal list (reverse list)))
 
 (ert-deftest Q06 ()
   (should (palindrome-p '(x a m a x)))

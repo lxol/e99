@@ -7,13 +7,11 @@
 
 (require 'e99utils)
 
-(defun num-elements (lst)
-  "The number of elements of LST."
+(defun num-elements (list)
+  "The number of elements of LIST."
   (let ((num 0))
-    (while (not (null lst))
-      (setq num (1+ num)
-            lst (cdr lst)))
-    num))
+    (dolist (el list num)
+      (setq num (1+ num)))))
 
 (ert-deftest Q04 ()
   (should (equal 0 (num-elements nil)))
