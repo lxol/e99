@@ -26,7 +26,7 @@
 
   (should (equal nil (compress nil)))
   (should (equal '(a b c) (compress '(a b c))))
-  (should (equal '(a) (compress (repeat-n 'a overflow-depth))))
+  (should (equal '(a) (compress (make-list overflow-depth 'a))))
 )
 
 ;;; 08.el ends here

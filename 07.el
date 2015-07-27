@@ -30,8 +30,8 @@
   (should (equal '(a b c d e) (my-flatten '((((((a b c d e)))))))))
   (should (equal '(a b c) (my-flatten '((a b c) (nil) nil))))
 
-  (should (equal (repeat-n 'a overflow-depth)
-                 (my-flatten (repeat-n '(a) overflow-depth))))
+  (should (equal (make-list overflow-depth 'a)
+                 (my-flatten (make-list overflow-depth '(a)))))
 )
 
 ;;; 07.el ends here
