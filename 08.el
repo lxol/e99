@@ -18,8 +18,8 @@
   (let (deduped last)
     (dolist (el list (reverse deduped))
       (when (not (equal last el))
-        (setq deduped (cons el deduped)
-              last el)))))
+        (push el deduped)
+        (setq last el)))))
 
 (ert-deftest Q08 ()
   (should (equal '(a b c a d e) (compress '(a a a a b c c a a d e e e e))))

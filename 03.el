@@ -9,14 +9,14 @@
 ;;; Code:
 
 (require 'e99utils)
+(require 'cl-lib)
 
-(defun element-at (lst k)
-  "Element of LST at position K (1-based indexing)."
+(defun element-at (list k)
+  "Element of LIST at position K (1-based indexing)."
   (while (> k 1)
-    (setq lst (cdr lst)
-          k (1- k)))
-  (car lst))
-
+    (pop list)
+    (cl-incf k -1))
+  (car list))
 
 (ert-deftest Q03 ()
   (should (equal 'c (element-at '(a b c d e) 3)))

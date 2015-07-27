@@ -9,11 +9,11 @@
 
 (require 'e99utils)
 
-(defun my-but-last (lst)
-  "Last but one box of LST."
-  (while (not (null (cddr lst)))
-    (setq lst (cdr lst)))
-  lst)
+(defun my-but-last (list)
+  "Last but one box of LIST."
+  (while (cddr list)
+    (pop list))
+  list)
 
 
 (ert-deftest Q02 ()

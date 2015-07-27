@@ -19,9 +19,10 @@
     (let (current groups)
       (dolist (el list (reverse (cons current groups)))
         (cond ((null current)      (setq current (list el)))
-              ((member el current) (setq current (cons el current)))
-              (t                   (setq groups  (cons current groups)
-                                         current (list el))))))))
+              ((member el current) (push el current))
+              (t                   (push current groups)
+                                   (setq current (list el)))
+              )))))
 
 (ert-deftest Q09 ()
   (should (equal '((a a a a) (b) (c c) (a a) (d) (e e e e))

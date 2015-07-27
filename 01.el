@@ -11,8 +11,8 @@
 
 (defun my-last (lst)
   "The last box of LST."
-  (while (not (null (cdr lst)))
-    (setq lst (cdr lst)))
+  (while (cdr lst)
+    (pop lst))
   lst)
 
 (ert-deftest Q01 ()

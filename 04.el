@@ -6,12 +6,13 @@
 ;;; Code:
 
 (require 'e99utils)
+(require 'cl-lib)
 
 (defun num-elements (list)
   "The number of elements of LIST."
   (let ((num 0))
     (dolist (el list num)
-      (setq num (1+ num)))))
+      (cl-incf num))))
 
 (ert-deftest Q04 ()
   (should (equal 0 (num-elements nil)))

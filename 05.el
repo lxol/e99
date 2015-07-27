@@ -11,7 +11,7 @@
   "A list with the same elements as LIST in reverse order."
   (let (builder)
     (dolist (el list builder)
-      (setq builder (cons el builder)))))
+      (push el builder))))
 
 (ert-deftest Q05 ()
   (should (equal nil (my-reverse nil)))
