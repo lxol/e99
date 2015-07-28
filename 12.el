@@ -7,6 +7,8 @@
 ;;
 ;;; Code:
 
+(require 'e99utils)
+
 (defun decode-modified (encoded)
   "Decode ENCODED back to the input of `encode-modified'."
   (apply 'append ;; poor man's -flatten
@@ -19,7 +21,12 @@
   (should (equal '(a a a a b c c a a d e e e e)
                  (decode-modified '((4 a) b (2 c) (2 a) d (4 e)))))
 
-  ;; TODO: roundtrip tests of random lists
+  (should (equal nil (decode-modified nil)))
+  (should (equal (make-list 10 'a) (decode-modified '((10 a)))))
+  (should (equal (make-list 10 'nil) (decode-modified '((10 nil)))))
+
+  (should (equal (make-list overflow-depth 'a)
+                 (decode-modified `((,overflow-depth a)))))
   )
 
 ;;; 12.el ends here
