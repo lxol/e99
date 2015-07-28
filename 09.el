@@ -35,4 +35,6 @@
                  (pack (make-list overflow-depth 'a))))
   )
 
+(provide 'e99q09)
+
 ;;; 09.el ends here
