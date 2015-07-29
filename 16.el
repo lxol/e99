@@ -8,6 +8,8 @@
 ;;
 ;;; Code:
 
+(require 'e99utils)
+
 (defun drop (list n)
   "Version of LIST with every Nth element removed."
   (let ((builder)
@@ -32,6 +34,9 @@
 
   (should (equal nil
                  (drop '(a b c) 1)))
+
+  (should (equal (make-list overflow-depth 'a)
+                 (drop (make-list (* 2 overflow-depth) 'a) 2)))
 
   )
 

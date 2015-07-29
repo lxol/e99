@@ -11,6 +11,8 @@
 ;;
 ;;; Code:
 
+(require 'e99utils)
+
 (defun split (list index)
   "A list containing two lists: LIST up to INDEX and its tail, 1-indexing."
   (let ((front)
@@ -30,6 +32,8 @@
   (should (equal '((a b c) nil)
                  (split '(a b c) 3)))
 
+  (should (equal (list (make-list overflow-depth 'a) (make-list overflow-depth 'a))
+                 (split (make-list (* 2 overflow-depth) 'a) overflow-depth)))
   )
 
 ;;; 17.el ends here
