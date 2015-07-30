@@ -14,15 +14,17 @@
 ;;; Code:
 
 (require 'e99q20)
+(require 'e99utils)
 
 (defun rnd-select (list n)
   "From LIST return N randomly selected elements."
+
   )
 
 (ert-deftest Q23 ()
-  ;; really hard to test stochastic code, and API doesn't allow us to
-  ;; define the random generator.
-  (should (equal 3 (length (rnd-select '(a b c d e f g h) 3))))
+  (random "") ;; repeatable random number generation
+
+  (should (equal 3 (rnd-select '(a b c d e f g h) 3)))
 
 
   )
