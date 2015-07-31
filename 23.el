@@ -44,4 +44,6 @@ Unique elements in LIST will not be duplicated."
                  (sort (rnd-select (number-sequence 1 overflow-depth) overflow-depth) '<)))
   )
 
+(provide 'e99q23)
+
 ;;; 23.el ends here
