@@ -31,14 +31,19 @@
 
 (require 'e99q26 "26")
 
+(defun remove-all (els list)
+  ;; does elisp have this already?
+  "Delete all elements ELS from LIST."
+  (dolist (el els list)
+    (setq list (remove el list))))
+
 (defun group3 (list)
   "A list of lists of 3 disjoint subgroups of LIST that flatten to LIST."
   (let (builder)
     (dolist (2s (combination 2 list))
-      ;; is there a removeAll in lisp?
-      (let ((pool (remove (car 2s) (remove (cadr 2s) list))))
+      (let ((pool (remove-all 2s list)))
         (dolist (3s (combination 3 pool))
-          (let ((4s (remove (car 3s) (remove (cadr 3s) (remove (nth 2 3s) pool)))))
+          (let ((4s (remove-all 3s pool)))
             (push (list 2s 3s 4s) builder)))))
     (reverse builder)))
 
