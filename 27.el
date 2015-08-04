@@ -29,16 +29,12 @@
 ;;
 ;;; Code:
 
+(require 'cl-lib)
+(require 'e99utils)
 (require 'e99q26 "26")
 
-(defun remove-all (els list)
-  ;; does elisp have this already?
-  "Delete all elements ELS from LIST."
-  (dolist (el els list)
-    (setq list (remove el list))))
-
 (defun group3 (list)
-  "A list of lists of 3 disjoint subgroups of LIST that flatten to LIST."
+  "A list of lists of 3 disjoint subgroups of LIST of size (2 3 4)."
   (let (builder)
     (dolist (2s (combination 2 list))
       (let ((pool (remove-all 2s list)))
@@ -47,6 +43,31 @@
             (push (list 2s 3s 4s) builder)))))
     (reverse builder)))
 
-(group3 '(a b c d e f g h i))
+(defun group (list sizes)
+  "List of lists of disjoint subgroups of LIST of size defined by SIZES."
+  (let (builder)
+    (cl-labels ((next (list sizes crumbs)
+                      (dolist (cs (combination (car sizes) list))
+                        (let ((crumbs (cons cs crumbs)))
+                          (if (null (cdr sizes))
+                              (push (reverse crumbs) builder)
+                            (next (remove-all cs list) (cdr sizes) crumbs))))))
+      (next list sizes nil)
+      ;; nreverse because `builder' is no longer used
+      (nreverse builder))))
+
+(ert-deftest Q27 ()
+  (let ((group3 (group3 '(a b c d e f g h i))))
+    (should (equal 1260 (length group3)))
+    (should (equal '((a b) (c d e) (f g h i)) (car group3))))
+
+  (let ((group3 (group '(a b c d e f g h i) '(2 3 4))))
+    (should (equal 1260 (length group3)))
+    (should (equal '((a b) (c d e) (f g h i)) (car group3))))
+
+  (let ((group2 (group '(a b c) '(1 2))))
+    (should (equal 3 (length group2)))
+    (should (equal '(((a) (b c)) ((b) (a c)) ((c) (a b))) group2)))
+  )
 
 ;;; 27.el ends here
