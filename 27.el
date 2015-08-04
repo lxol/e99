@@ -48,9 +48,9 @@
   (let (builder)
     (cl-labels ((next (list sizes crumbs)
                       (dolist (cs (combination (car sizes) list))
-                        (let ((crumbs (cons cs crumbs)))
+                        (let ((crumbs (append crumbs `(,cs)))) ;; avoids reverse
                           (if (null (cdr sizes))
-                              (push (reverse crumbs) builder)
+                              (push crumbs builder)
                             (next (remove-all cs list) (cdr sizes) crumbs))))))
       (next list sizes nil)
       ;; nreverse because `builder' is no longer used
