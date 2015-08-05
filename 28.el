@@ -31,7 +31,24 @@
 ;;
 ;;; Code:
 
-;; I assume I'm not allowed to use 'sort otherwise this is kinda trivial
+;; Looking in the original prolog solution, use of built-in `sort' is allowed.
 
+(defun lsort (lists)
+  "Sort the list elements of LISTS by ascending length."
+  (sort lists (lambda (a b) (< (length a) (length b)))))
+
+(defun lfsort (lists)
+  "Sort the list elements of LISTS by ascending length frequency."
+
+  )
+
+(ert-deftest Q28 ()
+  (should (equal '((o) (d e) (d e) (m n) (a b c) (f g h) (i j k l))
+                 (lsort '((a b c) (d e) (f g h) (d e) (i j k l) (m n) (o)))))
+
+  (should (equal '((i j k l) (o) (a b c) (f g h) (d e) (d e) (m n))
+                 (lfsort '((a b c) (d e) (f g h) (d e) (i j k l) (m n) (o)))))
+
+  )
 
 ;;; 28.el ends here
