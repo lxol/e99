@@ -1,4 +1,4 @@
-image: ensime/ensime:latest
+image: fommil/dotfiles
 
 script:
   - TESTS=`find . -name "[0-9]*.el" | sed 's|^|--load |' | sort` ;
