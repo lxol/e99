@@ -33,21 +33,42 @@
 
 ;; Looking in the original prolog solution, use of built-in `sort' is allowed.
 
+(require 'cl-lib)
+
 (defun lsort (lists)
   "Sort the list elements of LISTS by ascending length."
-  (sort lists (lambda (a b) (< (length a) (length b)))))
+  (sort (copy-sequence lists) (lambda (a b) (< (length a) (length b)))))
 
 (defun lfsort (lists)
   "Sort the list elements of LISTS by ascending length frequency."
-
-  )
+  (let ((counts (make-hash-table)))
+    (cl-flet (;; `incr' updates the `counts' frequency table
+              (incr (key) (puthash key (1+ (or (gethash key counts) 0)) counts)))
+      (dolist (el lists)
+        (incr (length el))))
+    (let* ((expanded
+            ;; convert the lists into a list of (list . frequency)
+            (mapcar (lambda (el) (list el (gethash (length el) counts))) lists))
+           (sorted
+            ;; sort by the frequencies, destructive is ok here
+            (sort expanded (lambda (a b) (< (cadr a) (cadr b))))))
+      (mapcar (lambda (e) (car e)) sorted))))
 
 (ert-deftest Q28 ()
   (should (equal '((o) (d e) (d e) (m n) (a b c) (f g h) (i j k l))
                  (lsort '((a b c) (d e) (f g h) (d e) (i j k l) (m n) (o)))))
 
+  (let ((a '((3 3 3) (2 2) (1 1))))
+    (lsort a)
+    ;; sort is destructive, check that ours isn't
+    (should (equal '((3 3 3) (2 2) (1 1)) a)))
+
   (should (equal '((i j k l) (o) (a b c) (f g h) (d e) (d e) (m n))
                  (lfsort '((a b c) (d e) (f g h) (d e) (i j k l) (m n) (o)))))
+
+  (let ((a '((a b c) (d e) (f g h) (d e) (i j k l) (m n) (o))))
+    (lfsort a)
+    (should (equal '((a b c) (d e) (f g h) (d e) (i j k l) (m n) (o)) a)))
 
   )
 
