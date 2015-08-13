@@ -14,7 +14,7 @@
 ;;; Code:
 
 (require 'e99utils)
-(require 'e99q09)
+(require 'e99q09 "09")
 
 (defun encode (list)
   "Run-length encoded LIST with an O(n) memory requirement."
@@ -32,5 +32,7 @@
   (should (equal `((,overflow-depth a))
                  (encode (make-list overflow-depth 'a))))
   )
+
+(provide 'e99q10)
 
 ;;; 10.el ends here
