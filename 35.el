@@ -14,10 +14,21 @@
 ;;
 ;;; Code:
 
+(require 'cl-lib)
+(require 'e99q31 "31")
+
 (defun prime-factors (integer)
   "List of INTEGER's prime factors."
-
-  )
+  (let ((factors nil)
+        (prime 2))
+    (while (not (eq 1 integer))
+      (if (not (eq 0 (% integer prime)))
+          (while (progn
+                   (cl-incf prime)
+                   (not (is-prime prime))))
+        (push prime factors)
+        (setq integer (/ integer prime))))
+    (nreverse factors)))
 
 (ert-deftest Q35 ()
 
