@@ -17,12 +17,13 @@
 (defun is-prime (integer)
   "T iff INTEGER is prime, otherwise NIL."
   ;; nobody ever said this should be efficient...
-  (cl-every (lambda (el) (not (eq 0 (% integer el))))
-            (number-sequence 2 (1- integer))))
+  (and (< 1 integer)
+       (cl-every (lambda (el) (not (eq 0 (% integer el))))
+                 (number-sequence 2 (1- integer)))))
 
 (ert-deftest Q31 ()
 
-  (should (is-prime 1))
+  (should (not (is-prime 1)))
   (should (is-prime 2))
   (should (is-prime 3))
   (should (not (is-prime 4)))

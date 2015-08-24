@@ -42,4 +42,6 @@
 
   )
 
+(provide 'e99q34)
+
 ;;; 34.el ends here
