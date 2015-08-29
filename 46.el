@@ -123,6 +123,8 @@
 
   )
 
+(provide 'e99q46)
+
 ;; Local Variables:
 ;; compile-command: "cask exec ert-runner 46.el"
 ;; End:
