@@ -39,12 +39,13 @@
 
 (defun truth-trial (depth)
   "Generate a list of truth trials with DEPTH parts."
-  (if (>= 1 depth)
-      '((nil) (t))
-    (let (builder)
+  (cond
+   ((<= depth 0) (error "Invalid depth %s" depth))
+   ((eq 1 depth) '((nil) (t)))
+   (t (let (builder)
         (dolist (rem (truth-trial (1- depth)) builder)
           (dolist (e '(nil t) nil)
-            (push (append (list e) rem) builder))))))
+            (push (append (list e) rem) builder)))))))
 
 (defun truth-table (expr)
   "The truth table for the function EXPR of an arbitrary number of parameters."
@@ -55,6 +56,7 @@
       (push (append trial (list (apply expr trial))) table))))
 
 (ert-deftest Q48 ()
+  (should-error (truth-trial 0))
   (should (equal '((nil) (t)) (truth-trial 1)))
   (should (equal '((t t) (nil t) (t nil) (nil nil)) (truth-trial 2)))
   (should (equal '((t   nil nil)
