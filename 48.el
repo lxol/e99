@@ -49,7 +49,7 @@
 
 (defun truth-table (expr)
   "The truth table for the function EXPR of an arbitrary number of parameters."
-  (let* ((nargs (length (args expr)))
+  (let* ((nargs (length (help-function-arglist expr)))
          (trials (truth-trial nargs))
          (table))
     (dolist (trial trials table)

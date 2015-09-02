@@ -14,14 +14,6 @@
   (dolist (el els list)
     (setq list (remove el list))))
 
-(defun args (function)
-  ;; HACK https://groups.google.com/d/msg/gnu.emacs.help/r0HWn7EYX8A/leKqcft8AwAJ
-  "The arg list of FUNCTION."
-  (let ((kind (car function)))
-    (if (eq kind 'closure)
-        (cadr (cdr function))
-      (cadr function))))
-
 (defun contain-same-elements (a b)
   "Non nil iff A and B contain the same elements."
   (and (eq (length a) (length b))
@@ -31,10 +23,6 @@
                  (setq b (cl-remove i b :count 1 :test 'equal)))))))
 
 (ert-deftest utils ()
-  ;; can only test the lexical-binding variant in CI
-  ;; but dynamic-binding is tested interactively
-  (should (equal '(a b c) (args (lambda (a b c) `(,c ,a ,b)))))
-
   (should (contain-same-elements '(a b c d) '(b c a d)))
 
   (should (contain-same-elements
