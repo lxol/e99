@@ -21,11 +21,38 @@
 ;;
 ;;   ((a "0") (b "101") (c "100") (d "111") (e "1101") (f "1100"))
 ;;
+;;  If the symbols are sorted by probability, there is a linear-time
+;;  (O(n)) method to create a Huffman tree using two queues, the first
+;;  one containing the initial weights (along with pointers to the
+;;  associated leaves), and combined weights (along with pointers to
+;;  the trees) being put in the back of the second queue. This assures
+;;  that the lowest weight is always kept at the front of one of the
+;;  two queues:
+;;
+;;  1. Start with as many leaves as there are symbols.
+;;
+;;  2. Enqueue all leaf nodes into the first queue (by probability in
+;;     increasing order so that the least likely item is in the head
+;;     of the queue).
+;;
+;;  3. While there is more than one node in the queues:
+;;
+;;     a) Dequeue the two nodes with the lowest weight by examining
+;;        the fronts of both queues.
+;;
+;;     b) Create a new internal node, with the two just-removed nodes
+;;        as children (either node can be either child) and the sum of
+;;        their weights as the new weight.
+;;
+;;     c) Enqueue the new node into the rear of the second queue.
+;;
+;;  4. The remaining node is the root node of the tree.
+;;
 ;;; Code:
 
 (defun huffman (freqs)
   "Huffman table `((sym code) ...)' for FREQS `((sym count) ...)'."
-  (let ((sorted (sort freqs (lambda (a b) (> (cadr a) (cadr b))))))
+  (let ((sorted (sort freqs (lambda (a b) (< (cadr a) (cadr b))))))
     sorted
     )
   )
