@@ -1,8 +1,7 @@
-image: fommil/dotfiles
-
-script:
-  - cask install &&
-    cask exec ert-runner *.el
-
-env:
-  - EMACS=/opt/emacs-24.5/bin/emacs
+build:
+  image: fommil/dotfiles:latest
+  environment:
+    - EMACS=/opt/emacs-24.5/bin/emacs
+  commands:
+    - cask install &&
+      cask exec ert-runner *.el
