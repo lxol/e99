@@ -58,53 +58,74 @@ Nodes can be either:
 * leaf `(sym count)'
 * internal `(left right count)' (i.e. count is cached)
 
-where left and right are nodes.  The Huffman tree is an internal node."
+where left and right are nodes.  The Huffman tree is a node."
   (let ((q1 (sort freqs (lambda (a b) (< (cadr a) (cadr b)))))
         (q2))
     (cl-flet* ((weight (node) (pcase node
-                                ;; TODO how to match and discard syms?
-                                (`(,sym ,count)         count)
-                                (`(,left ,right ,count) count)
-                                (_                      0)))
+                                (`(,_ ,count)    count)
+                                (`(,_ ,_ ,count) count)
+                                (_               0)))
                (nlowest () (let ((left  (weight (car q1)))
                                  (right (weight (car q2))))
                              (if (<= left right)
                                  (pop q2)
                                (pop q1)))))
-      (while (and (< 1 (length (append q1 q2))))
+      (while (or (not (null q1)) (not (null (cdr q2))))
         (let ((left (nlowest))
               (right (nlowest)))
           ;; TODO function to push-to-end
-          (setq q2 (append q2
-                           `((,left ,right ,(+ (weight left) (weight right))))))))
-      q2)))
+          (cond
+           ((null left)  nil)
+           ((null right) (setq q2 (append q2 (list left))))
+           (t            (setq q2 (append q2
+                                          `((,left ,right ,(+ (weight left) (weight right))))))))))
+      (car q2))))
 
-(defun huffman-table (tree)
-  "Huffman table `((sym code) ...)' for a `huffman-tree' TREE."
-  (pcase node
-    (`(,sym ,count)  prefix)
-    (`(,left ,right) (concat (prefix "0" (encode left))
-                             (prefix "1" (encode right))))))
+(defun huffman-table (tree &optional prefix)
+  "Huffman table `((sym code) ...)' for a `huffman-tree' TREE.
+PREFIX is added to the beginning of all codes."
+  (pcase tree
+    (`(,sym ,_)
+     (list (list sym (or prefix ""))))
+    (`(,left ,right ,_)
+     (append (huffman-table left (concat prefix "0"))
+             (huffman-table right (concat prefix "1"))))))
 
 (defun huffman (freqs)
   "Huffman table `((sym code) ...)' for FREQS `((sym count) ...)'."
+  ;; TODO sort the output by input order
   (huffman-table (huffman-tree freqs)))
 
 (ert-deftest Q50 ()
-  (should (equal '(((f 5) (e 9) 14))
+  (should (equal '(f 5)
+                 (huffman-tree '((f 5)))))
+
+  (should (equal '((f 5) (e 9) 14)
                  (huffman-tree '((e 9) (f 5)))))
 
-  (should (equal '(((f 5) (e 9) 14))
-                 (huffman-tree '((e 9) (f 5)))))
-
-  ;; TODO: check if this is actually correct
-  (should (equal '(((((((f 5) (e 9) 14) (c 12) 26) (b 13) 39) (d 16) 55) (a 45) 100))
+  ;; FIXME: check if this is valid. It looks like we're building deep instead of wide
+  ;; '(((((f . e) . c) . b) . d) . a)
+  ;; should look more like
+  ;; '((a . ((c . b) . ((f . e) . d))))
+  (should (equal '((((((f 5) (e 9) 14) (c 12) 26) (b 13) 39) (d 16) 55) (a 45) 100)
                  (huffman-tree '((a 45) (b 13) (c 12) (d 16) (e 9) (f 5)))))
 
-  ;; TODO tests around huffman-table
+
+  (should (equal '((e ""))
+                 (huffman-table '(e 9))))
+
+  (should (equal '((f "0") (e "1"))
+                 (huffman-table '((f 5) (e 9) 14))))
+
+  (should (equal '((f "00") (e "01") (c "1"))
+                 (huffman-table '(((f 5) (e 9) 14) (c 12) 26))))
+
+  (should (equal '((a "0") (c "100") (b "101") (f "1100") (e "1101") (d "111"))
+                 (huffman-table '((a 1) (((c 1) (b 1) 2) (((f 1) (e 1) 2) (d 1) 2) 2) 2))))
 
   (should (equal '((a "0") (b "101") (c "100") (d "111") (e "1101") (f "1100"))
                  (huffman '((a 45) (b 13) (c 12) (d 16) (e 9) (f 5)))))
+
   )
 
 ;; Local Variables:
