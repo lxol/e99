@@ -63,13 +63,16 @@ where left and right are nodes.  The Huffman tree is a node."
         (q2))
     (cl-flet* ((weight (node) (pcase node
                                 (`(,_ ,count)    count)
-                                (`(,_ ,_ ,count) count)
-                                (_               0)))
-               (nlowest () (let ((left  (weight (car q1)))
-                                 (right (weight (car q2))))
-                             (if (<= left right)
-                                 (pop q2)
-                               (pop q1)))))
+                                (`(,_ ,_ ,count) count)))
+               (nlowest () (cond
+                            ((null q1) (pop q2))
+                            ((null q2) (pop q1))
+                            (t (let ((left  (weight (car q1)))
+                                     (right (weight (car q2))))
+                                 (if (and (not (null q1))
+                                          (<= left right))
+                                     (pop q1)
+                                   (pop q2)))))))
       (while (or (not (null q1)) (not (null (cdr q2))))
         (let ((left (nlowest))
               (right (nlowest)))
@@ -103,11 +106,7 @@ PREFIX is added to the beginning of all codes."
   (should (equal '((f 5) (e 9) 14)
                  (huffman-tree '((e 9) (f 5)))))
 
-  ;; FIXME: check if this is valid. It looks like we're building deep instead of wide
-  ;; '(((((f . e) . c) . b) . d) . a)
-  ;; should look more like
-  ;; '((a . ((c . b) . ((f . e) . d))))
-  (should (equal '((((((f 5) (e 9) 14) (c 12) 26) (b 13) 39) (d 16) 55) (a 45) 100)
+  (should (equal '((a 45) (((c 12) (b 13) 25) (((f 5) (e 9) 14) (d 16) 30) 55) 100)
                  (huffman-tree '((a 45) (b 13) (c 12) (d 16) (e 9) (f 5)))))
 
 
@@ -121,7 +120,7 @@ PREFIX is added to the beginning of all codes."
                  (huffman-table '(((f 5) (e 9) 14) (c 12) 26))))
 
   (should (equal '((a "0") (c "100") (b "101") (f "1100") (e "1101") (d "111"))
-                 (huffman-table '((a 1) (((c 1) (b 1) 2) (((f 1) (e 1) 2) (d 1) 2) 2) 2))))
+                 (huffman-table '((a 45) (((c 12) (b 13) 25) (((f 5) (e 9) 14) (d 16) 30) 55) 100))))
 
   (should (equal '((a "0") (b "101") (c "100") (d "111") (e "1101") (f "1100"))
                  (huffman '((a 45) (b 13) (c 12) (d 16) (e 9) (f 5)))))
