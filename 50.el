@@ -61,7 +61,7 @@ Nodes can be either:
 * internal `(left right count)' (i.e. count is cached)
 
 where left and right are nodes.  The Huffman tree is a node."
-  (let ((q1 (sort freqs (lambda (a b) (< (cadr a) (cadr b)))))
+  (let ((q1 (sort (copy-tree freqs) (lambda (a b) (< (cadr a) (cadr b)))))
         (q2))
     (cl-flet* ((weight (node) (pcase node
                                 (`(,_ ,count)    count)
@@ -90,15 +90,20 @@ where left and right are nodes.  The Huffman tree is a node."
 PREFIX is added to the beginning of all codes."
   (pcase tree
     (`(,sym ,_)
-     (list (list sym (or prefix ""))))
+     (list (list sym (if prefix prefix "0"))))
     (`(,left ,right ,_)
      (append (huffman-table left (concat prefix "0"))
              (huffman-table right (concat prefix "1"))))))
 
 (defun huffman (freqs)
-  "Huffman table `((sym code) ...)' for FREQS `((sym count) ...)'."
-  ;; TODO sort the output by input order
-  (huffman-table (huffman-tree freqs)))
+  "Huffman table `((sym code) ...)' for FREQS `((sym count) ...)'.
+Preserves the ordering of the input symbols."
+  (let ((results (make-hash-table :test 'equal)))
+    (dolist (e (huffman-table (huffman-tree freqs)))
+      (puthash (car e) (cadr e) results))
+    (mapcar
+     (lambda (e) (list (car e) (gethash (car e) results 'none)))
+     freqs)))
 
 (ert-deftest Q50 ()
   (should (equal '(f 5)
@@ -111,7 +116,7 @@ PREFIX is added to the beginning of all codes."
                  (huffman-tree '((a 45) (b 13) (c 12) (d 16) (e 9) (f 5)))))
 
 
-  (should (equal '((e ""))
+  (should (equal '((e "0"))
                  (huffman-table '(e 9))))
 
   (should (equal '((f "0") (e "1"))
@@ -123,6 +128,12 @@ PREFIX is added to the beginning of all codes."
   (should (equal '((a "0") (c "100") (b "101") (f "1100") (e "1101") (d "111"))
                  (huffman-table '((a 45) (((c 12) (b 13) 25) (((f 5) (e 9) 14) (d 16) 30) 55) 100))))
 
+
+  (should (equal '((f "0"))
+                 (huffman '((f 5)))))
+
+  (should (equal '((e "1") (f "0"))
+                 (huffman '((e 9) (f 5)))))
 
   (should (equal '((a "0") (b "101") (c "100") (d "111") (e "1101") (f "1100"))
                  (huffman '((a 45) (b 13) (c 12) (d 16) (e 9) (f 5)))))
