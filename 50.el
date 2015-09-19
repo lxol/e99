@@ -50,6 +50,8 @@
 ;;
 ;;; Code:
 
+(require 'e99utils)
+
 (defun huffman-tree (freqs)
   "Huffman tree for FREQS `((sym count) ...)'.
 
@@ -67,21 +69,20 @@ where left and right are nodes.  The Huffman tree is a node."
                (nlowest () (cond
                             ((null q1) (pop q2))
                             ((null q2) (pop q1))
-                            (t (let ((left  (weight (car q1)))
-                                     (right (weight (car q2))))
-                                 (if (and (not (null q1))
-                                          (<= left right))
-                                     (pop q1)
-                                   (pop q2)))))))
-      (while (or (not (null q1)) (not (null (cdr q2))))
+                            (t         (let ((left  (weight (car q1)))
+                                             (right (weight (car q2))))
+                                         (if (and (not (null q1))
+                                                  (<= left right))
+                                             (pop q1)
+                                           (pop q2)))))))
+      (while (or (not (null q1))
+                 (not (null (cdr q2))))
         (let ((left (nlowest))
               (right (nlowest)))
-          ;; TODO function to push-to-end
           (cond
-           ((null left)  nil)
-           ((null right) (setq q2 (append q2 (list left))))
-           (t            (setq q2 (append q2
-                                          `((,left ,right ,(+ (weight left) (weight right))))))))))
+           ((null right) (setq q2 (add-to-end q2 left)))
+           (t            (let ((combined (+ (weight left) (weight right))))
+                           (setq q2 (add-to-end q2 (list left right combined))))))))
       (car q2))))
 
 (defun huffman-table (tree &optional prefix)
@@ -121,6 +122,7 @@ PREFIX is added to the beginning of all codes."
 
   (should (equal '((a "0") (c "100") (b "101") (f "1100") (e "1101") (d "111"))
                  (huffman-table '((a 45) (((c 12) (b 13) 25) (((f 5) (e 9) 14) (d 16) 30) 55) 100))))
+
 
   (should (equal '((a "0") (b "101") (c "100") (d "111") (e "1101") (f "1100"))
                  (huffman '((a 45) (b 13) (c 12) (d 16) (e 9) (f 5)))))
