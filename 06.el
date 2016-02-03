@@ -9,18 +9,4 @@
 
 (require 'e99utils)
 
-(defun palindrome-p (list)
-  "True if LIST is a palindrome."
-  (equal list (reverse list)))
-
-(ert-deftest Q06 ()
-  (should (palindrome-p '(x a m a x)))
-
-  (should (not (palindrome-p '(x m a a x))))
-
-  (should (palindrome-p nil))
-
-  (should (palindrome-p (make-list overflow-depth 'x)))
-)
-
 ;;; 06.el ends here

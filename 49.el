@@ -33,44 +33,6 @@
 ;;
 ;;; Code:
 
-(require 'e99utils)
-
-(defun graycode (n)
-  "The Gray codes for N bits in `string' form."
-  (cond ((< n 1)  (error "%s < 1" n))
-        ((eq n 1) '("0" "1"))
-        (t        (let ((previous (graycode (1- n))))
-                    (append
-                     (mapcar (lambda (e) (concat "0" e)) previous)
-                     (mapcar (lambda (e) (concat "1" e)) (reverse previous)))))))
-
-(defvar result-caching-lookup
-  (make-hash-table :test 'equal :weakness 'key-and-value)
-  "A Hash Table from a function and its args to the result.")
-
-(defun result-caching-advice (original &rest args)
-  "Advice around ORIGINAL to re-use a cached result for ARGS."
-  (let* ((key (list original args))
-         (cached (gethash key result-caching-lookup)))
-    (if cached
-        cached
-      (let ((res (apply original args)))
-        (puthash key res result-caching-lookup)
-        res))))
-
-(advice-add 'graycode :around #'result-caching-advice)
-;;(advice-remove 'graycode #'result-caching-advice)
-
-(ert-deftest Q49 ()
-  (should-error (graycode 0))
-  (should (equal '("0" "1") (graycode 1)))
-  (should (equal '("00" "01" "11" "10") (graycode 2)))
-  (should (equal '("000" "001" "011" "010" "110" "111" "101" "100") (graycode 3)))
-
-  ;; cached results have eq res, not just equal
-  (should (eq (graycode 3) (graycode 3)))
-  )
-
 ;; Local Variables:
 ;; compile-command: "cask exec ert-runner 49.el"
 ;; End:

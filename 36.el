@@ -16,26 +16,6 @@
 ;;
 ;;; Code:
 
-(require 'e99q10 "10")
-(require 'e99q35 "35")
-
-(defun prime-factors-mult (integer)
-  "List containing the prime factors and multiplicity of INTEGER."
-  (mapcar
-   (lambda (e) (pcase e (`(,count ,factor) (list factor count))))
-   (encode (prime-factors integer))))
-
-
-(ert-deftest Q36 ()
-
-  (should (equal '((3 2) (5 1) (7 1))
-                 (prime-factors-mult 315)))
-
-  )
-
-(provide 'e99q36)
-
-;; Local Variables:
 ;; compile-command: "cask exec ert-runner 36.el"
 ;; End:
 

@@ -18,19 +18,6 @@
 ;;
 ;;; Code:
 
-(require 'ert)
-
-(defun symmetric/1 (tree)
-  "T if TREE is symmetric."
-  )
-
-(defun mirror/2 (left right)
-  "T if LEFT is a mirror tree of RIGHT."
-  )
-
-(ert-deftest Q56 ()
-  (should nil)
-  )
 
 ;; Local Variables:
 ;; compile-command: "cask exec ert-runner 56.el"

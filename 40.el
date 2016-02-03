@@ -18,29 +18,6 @@
 ;;
 ;;; Code:
 
-(require 'e99q31 "31")
-
-(defun goldbach (n)
-  "Two primes that sum to the even integer N that is gte 6."
-  (let ((left 2)
-        (right))
-    (while
-        (progn
-          (cl-incf left)
-          (setq right (- n left))
-          (or (not (is-prime left))
-              (not (is-prime right)))))
-    (list left right)))
-
-(ert-deftest Q40 ()
-
-  (should (equal '(5 23) (goldbach 28)))
-
-  (dolist (el (number-sequence 6 50 2))
-    (goldbach el))
-)
-
-(provide 'e99q40)
 
 ;; Local Variables:
 ;; compile-command: "cask exec ert-runner 40.el"

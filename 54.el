@@ -35,23 +35,6 @@
 ;;
 ;;; Code:
 
-(defun istree (arg &optional shallow)
-  "Nil if ARG is not a binary tree.
-Do not descend the branches if SHALLOW is non-nil."
-  (pcase arg
-    (`(,_ ,left ,right) (or shallow (and (istree left) (istree right))))
-    (_ (null arg))))
-
-(ert-deftest Q54 ()
-  (should (istree nil))
-  (should (istree '(a nil nil)))
-
-  (should (istree '(a (b nil nil) nil)))
-
-  (should-not (istree '(a (b nil nil))))
-
-  (should (istree '(a (b (d nil nil) (e nil nil)) (c nil (f (g nil nil) nil))))))
-
 ;; Local Variables:
 ;; compile-command: "cask exec ert-runner 54.el"
 ;; End:

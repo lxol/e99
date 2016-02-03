@@ -25,23 +25,5 @@
 ;;
 ;;; Code:
 
-(require 'cl-lib)
-(require 'e99q33 "33")
-
-
-(defun totient-phi (n)
-  "Number of positive integers `[1, N)' that are coprime to N."
-  (let ((count 0))
-    (dolist (el (number-sequence 1 n) count)
-      (when (coprime n el)
-        (cl-incf count)))))
-
-(ert-deftest Q34 ()
-
-  (should (equal 4 (totient-phi 10)))
-
-  )
-
-(provide 'e99q34)
 
 ;;; 34.el ends here

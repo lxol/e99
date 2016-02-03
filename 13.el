@@ -17,42 +17,4 @@
 (require 'cl-lib)
 (require 'e99utils)
 
-(defun encode-direct (list)
-  "Run-length encoding of LIST with negligible memory overhead."
-  (when list
-    (let (current builder)
-      (cl-flet ((updated ()
-                         (if (eq 1 (car current))
-                             (push (cadr current) builder)
-                           (push current builder))
-                         builder))
-        (dolist (el (reverse list) (updated))
-          (pcase current
-            ((pred null)
-             (setq current `(1 ,el))) ;; annoying first element
-            ;; can this be done without guard? i.e. ,last => el
-            ((and `(,i ,last) (guard (eq el last)))
-             (setf (car current) (1+ i)))
-            (`(,i ,last)
-             (updated)
-             (setq current `(1 ,el)))
-            ))))))
-
-
-(ert-deftest Q13 ()
-  (should (equal '((4 a) b (2 c) (2 a) d (4 e))
-                 (encode-direct '(a a a a b c c a a d e e e e))))
-
-  (should (equal '(b (2 c) (2 a) d)
-                 (encode-direct '(b c c a a d))))
-
-  (should (equal nil (encode-direct nil)))
-  (should (equal '((10 a)) (encode-direct (make-list 10 'a))))
-  (should (equal '((10 nil)) (encode-direct (make-list 10 'nil))))
-
-  (should (equal `((,overflow-depth a))
-                 (encode-direct (make-list overflow-depth 'a))))
-
-  )
-
 ;;; 13.el ends here

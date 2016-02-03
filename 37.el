@@ -22,23 +22,6 @@
 ;;
 ;;; Code:
 
-(require 'e99q36 "36")
-
-(defun totient-improved (n)
-  "Number of positive integers `[1, N)' that are coprime to N."
-  (let ((phi 1)
-        (factors (prime-factors-mult n)))
-    (dolist (factor factors phi)
-      (pcase factor
-        (`(,p ,m) (setq phi (* phi (* (1- p) (expt p (1- m))))))))))
-
-(ert-deftest Q37 ()
-
-  (should (equal 4 (totient-improved 10)))
-
-  )
-
-(provide 'e99q37)
 
 ;; Local Variables:
 ;; compile-command: "cask exec ert-runner 37.el"

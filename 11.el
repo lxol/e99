@@ -12,27 +12,6 @@
 ;;
 ;;; Code:
 
-(require 'e99q09)
-
-(defun encode-modified (list)
-  "Alternative run-length encoded LIST with an O(n) memory requirement."
-  (mapcar (lambda (el) (cond
-                   ((cdr el) (list (length el) (car el)))
-                   (t        (car el))))
-          (pack list)))
-
-(ert-deftest Q11 ()
-  (should (equal '((4 a) b (2 c) (2 a) d (4 e))
-                 (encode-modified '(a a a a b c c a a d e e e e))))
-
-  (should (equal nil (encode-modified nil)))
-  (should (equal '((10 a)) (encode-modified (make-list 10 'a))))
-  (should (equal '((10 nil)) (encode-modified (make-list 10 'nil))))
-
-  (should (equal `((,overflow-depth a))
-                 (encode-modified (make-list overflow-depth 'a))))
-
-  )
 
 
 ;;; 11.el ends here
